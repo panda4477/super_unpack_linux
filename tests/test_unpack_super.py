@@ -85,6 +85,22 @@ def sparse(raw):
     return struct.pack("<IHHHHIIII", 0xED26FF3A, 1, 0, 28, 12, BLOCK, len(raw)//BLOCK, len(chunks), crc)+b"".join(chunks)
 
 
+def replace_slot(raw, slot, parts, copies=(False, True)):
+    data = make_metadata(parts)
+    for backup in copies:
+        start = 12288 + (slot + (2 if backup else 0))*BLOCK
+        raw[start:start+BLOCK] = bytes(BLOCK)
+        raw[start:start+len(data)] = data
+
+
+def ab_fixture(parts):
+    raw, _, vendor = fixture()
+    raw[49152:53248] = b"B123"*1024
+    for slot in (0, 1):
+        replace_slot(raw, slot, parts)
+    return raw, vendor, b"B123"*1024
+
+
 class EndToEnd(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory(prefix="unpack-super-unit-")
@@ -133,27 +149,34 @@ class EndToEnd(unittest.TestCase):
         self.assertIn("CRC32 mismatch", result.stderr)
         self.assertFalse(self.output.exists())
 
-    def test_stale_slot_rejected_and_slot_one_selected(self):
+    def test_stale_a_and_valid_b_are_both_extracted_with_warning(self):
         raw, system, vendor = fixture(old_slot=True)
         result = self.run_cli(raw)
         self.assertEqual(result.returncode, 0, result.stderr)
-        self.assertEqual(self.assert_images(system, vendor)["selected_slot"], 1)
+        report = self.assert_images(system, vendor)
+        self.assertEqual(report["selected_metadata_slots"], [0, 1])
+        self.assertEqual(report["extracted_boot_slots"], ["a", "b"])
+        self.assertEqual(report["status"], "passed_with_warnings")
+        self.assertEqual((self.output/"system_a.img").read_bytes(), system[:BLOCK])
+        self.assertEqual((self.output/"vendor_a.img").read_bytes(), vendor)
+        self.assertEqual(len(report["extracted_partitions"]), 4)
 
-    def test_explicit_stale_slot_fails(self):
+    def test_explicit_metadata_slot_limits_output_and_keeps_warning(self):
         raw, _, _ = fixture(old_slot=True)
         result = self.run_cli(raw, "--slot", "0")
-        self.assertNotEqual(result.returncode, 0)
-        self.assertFalse(self.output.exists())
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual({p.name for p in self.output.glob('*.img')}, {'system_a.img', 'vendor_a.img'})
+        report = json.loads((self.output/'extraction_report.json').read_text())
+        self.assertEqual(report['status'], 'passed_with_warnings')
 
-    def test_ambiguous_layout_requires_slot(self):
+    def test_a_and_b_in_different_metadata_slots_are_both_extracted(self):
         raw, system, vendor = fixture(ambiguous=True)
         result = self.run_cli(raw)
-        self.assertNotEqual(result.returncode, 0)
-        self.assertIn("--slot", result.stderr)
-        self.assertFalse(self.output.exists())
-        result = self.run_cli(raw, "--slot", "1")
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assert_images(system, vendor)
+        self.assertEqual((self.output/'system_a.img').read_bytes(), system)
+        self.assertEqual((self.output/'vendor_a.img').read_bytes(), vendor)
+        self.assertEqual(len(list(self.output.glob('*.img'))), 4)
 
     def test_backup_geometry_and_metadata_recovery(self):
         raw, system, vendor = fixture(old_slot=True)
@@ -162,7 +185,8 @@ class EndToEnd(unittest.TestCase):
         result = self.run_cli(raw)
         self.assertEqual(result.returncode, 0, result.stderr)
         report = self.assert_images(system, vendor)
-        self.assertEqual(report["selected_copy"], "backup")
+        system_part = next(p for p in report['extracted_partitions'] if p['name'] == 'system_b')
+        self.assertEqual(system_part['metadata_sources'], [{'metadata_slot': 1, 'copy': 'backup'}])
 
     def test_all_metadata_checksums_bad(self):
         raw, _, _ = fixture()
@@ -191,12 +215,89 @@ class EndToEnd(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertFalse(self.output.exists())
 
-    def test_include_empty(self):
-        raw, system, vendor = fixture()
-        result = self.run_cli(raw, "--include-empty")
+    def test_zero_size_b_is_skipped_when_only_a_has_data(self):
+        raw, a, _ = ab_fixture([('vendor_a', [(88, 1)]), ('vendor_b', [])])
+        result = self.run_cli(raw)
         self.assertEqual(result.returncode, 0, result.stderr)
-        self.assertEqual((self.output/"empty_b.img").stat().st_size, 0)
-        self.assert_images(system, vendor)
+        self.assertEqual({p.name for p in self.output.glob('*.img')}, {'vendor_a.img'})
+        self.assertEqual((self.output/'vendor_a.img').read_bytes(), a)
+
+    def test_zero_size_a_is_skipped_when_only_b_has_data(self):
+        raw, _, b = ab_fixture([('vendor_a', []), ('vendor_b', [(96, 1)])])
+        result = self.run_cli(raw)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual({p.name for p in self.output.glob('*.img')}, {'vendor_b.img'})
+        self.assertEqual((self.output/'vendor_b.img').read_bytes(), b)
+
+    def test_a_and_b_in_same_metadata_are_both_extracted(self):
+        raw, a, b = ab_fixture([('vendor_a', [(88, 1)]), ('vendor_b', [(96, 1)])])
+        result = self.run_cli(raw)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual((self.output/'vendor_a.img').read_bytes(), a)
+        self.assertEqual((self.output/'vendor_b.img').read_bytes(), b)
+        self.assertEqual(len(list(self.output.glob('*.img'))), 2)
+
+    def test_allocated_all_zero_partition_is_skipped(self):
+        raw, _, _ = ab_fixture([('vendor_a', [(88, 1)]), ('vendor_b', [(96, 1)])])
+        raw[49152:53248] = bytes(BLOCK)
+        result = self.run_cli(raw)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual({p.name for p in self.output.glob('*.img')}, {'vendor_a.img'})
+        report = json.loads((self.output/'extraction_report.json').read_text())
+        self.assertEqual([(p['name'],p['reason']) for p in report['skipped_empty']], [('vendor_b','all_zero')])
+
+    def test_zero_extents_partition_is_skipped(self):
+        raw, _, _ = ab_fixture([('vendor_a', [(88, 1)]), ('vendor_b', [(None, 1)])])
+        result = self.run_cli(raw)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual({p.name for p in self.output.glob('*.img')}, {'vendor_a.img'})
+
+    def test_sparse_hole_partition_is_skipped(self):
+        raw, _, _ = ab_fixture([('vendor_a', [(88, 1)]), ('vendor_b', [(96, 1)])])
+        raw[49152:53248] = bytes(BLOCK)
+        result = self.run_cli(sparse(raw))
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual({p.name for p in self.output.glob('*.img')}, {'vendor_a.img'})
+
+    def test_last_nonzero_byte_keeps_partition(self):
+        raw, _, _ = ab_fixture([('vendor_b', [(96, 1)])])
+        raw[49152:53248] = bytes(BLOCK-1)+b'\x01'
+        result = self.run_cli(raw)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual((self.output/'vendor_b.img').read_bytes(), bytes(BLOCK-1)+b'\x01')
+
+    def test_duplicate_mapping_from_backup_and_other_slots_is_extracted_once(self):
+        raw, system, vendor = fixture()
+        result = self.run_cli(raw)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        report = self.assert_images(system, vendor)
+        self.assertEqual(len(report['extracted_partitions']), 2)
+        self.assertEqual(len(report['extracted_partitions'][0]['metadata_sources']), 4)
+
+    def test_same_name_different_mappings_are_preserved(self):
+        raw, a, b = ab_fixture([('vendor_b', [(88, 1)])])
+        replace_slot(raw, 1, [('vendor_b', [(96, 1)])])
+        result = self.run_cli(raw)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual((self.output/'vendor_b.meta0-primary.img').read_bytes(), a)
+        self.assertEqual((self.output/'vendor_b.meta1-primary.img').read_bytes(), b)
+        self.assertEqual(len(list(self.output.glob('*.img'))), 2)
+
+    def test_primary_backup_different_mappings_are_preserved(self):
+        raw, a, b = ab_fixture([('vendor_b', [(88, 1)])])
+        replace_slot(raw, 0, [('vendor_b', [(96, 1)])], copies=(True,))
+        result = self.run_cli(raw)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual((self.output/'vendor_b.meta0-primary.img').read_bytes(), a)
+        self.assertEqual((self.output/'vendor_b.meta0-backup.img').read_bytes(), b)
+
+    def test_all_empty_image_creates_report_only(self):
+        raw, _, _ = ab_fixture([('vendor_a', []), ('vendor_b', [(None, 1)])])
+        result = self.run_cli(raw)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(list(self.output.glob('*.img')), [])
+        report = json.loads((self.output/'extraction_report.json').read_text())
+        self.assertEqual(len(report['skipped_empty']), 2)
 
     def test_existing_output_and_symlink_are_preserved(self):
         raw, _, _ = fixture()

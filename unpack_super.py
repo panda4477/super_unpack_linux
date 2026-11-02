@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Extract logical partition images from a single Android super image.
 
+Extract all populated A/B partitions across all readable metadata slots.
 Python 3.8+, standard library only. Never mounts or unpacks a filesystem.
 Formats: AOSP liblp metadata v10.0-v10.2 and Android sparse image v1.
 """
@@ -20,7 +21,7 @@ import tempfile
 import time
 import zlib
 
-VERSION = "1.0.0"
+VERSION = "1.1.0"
 BUFFER = 4 * 1024 * 1024
 ZERO = bytes(BUFFER)
 
@@ -283,30 +284,43 @@ def metadata(image, geo, slot, backup):
             "tables_sha256": h[48:80].hex(), "partitions": parts, "issues": issues}
 
 
-def layout_key(candidate):
-    return json.dumps(sorted(candidate["partitions"], key=lambda p: p["name"]), sort_keys=True)
+def collect_partitions(candidates, requested_slot):
+    """Keep distinct mappings from every slot, including stale readable data.
 
-
-def choose_metadata(candidates, requested_slot):
+    Metadata slot numbers and A/B partition suffixes are different concepts.
+    One metadata slot can contain both A and B partitions.
+    """
     pool = [c for c in candidates if requested_slot is None or c["slot"] == requested_slot]
     require(pool, "No valid metadata for the requested slot.")
-    for slot in {c["slot"] for c in pool}:
-        copies = [c for c in pool if c["slot"] == slot]
-        require(len({layout_key(c) for c in copies}) == 1,
-                "Valid primary/backup metadata disagree in slot %d; cannot select safely." % slot)
-    usable = [c for c in pool if not c["issues"] and any(p["size_bytes"] for p in c["partitions"])]
-    require(usable, "No usable complete layout. " + "; ".join(issue for c in pool for issue in c["issues"]))
-    layouts = {}
-    for c in usable:
-        layouts.setdefault(layout_key(c), []).append(c)
-    require(len(layouts) == 1,
-            "Several different layouts are plausible; active slot cannot be inferred. Use --list and --slot N.")
-    return min(usable, key=lambda c: (c["slot"], c["copy"] != "primary"))
+    mappings, empty = {}, {}
+    for candidate in pool:
+        origin = {"metadata_slot": candidate["slot"], "copy": candidate["copy"]}
+        for part in candidate["partitions"]:
+            key = json.dumps([part["name"], part["size_bytes"], part["extents"]], sort_keys=True)
+            bucket = mappings if part["size_bytes"] else empty
+            if key not in bucket:
+                bucket[key] = dict(part, metadata_sources=[])
+            bucket[key]["metadata_sources"].append(origin)
+    parts = list(mappings.values())
+    groups = {}
+    for part in parts:
+        groups.setdefault(part["name"], []).append(part)
+    for name, variants in groups.items():
+        for part in variants:
+            if len(variants) == 1:
+                part["filename"] = name + ".img"
+            else:
+                origin = part["metadata_sources"][0]
+                # Dots cannot appear in a partition name, preventing collision
+                # with ordinary '<partition>.img' names.
+                part["filename"] = "%s.meta%d-%s.img" % (name, origin["metadata_slot"], origin["copy"])
+    require(len({p["filename"] for p in parts}) == len(parts), "Conflicting output filenames.")
+    skipped = [dict(p, reason="zero_size") for p in empty.values()]
+    return parts, skipped, sorted({c["slot"] for c in pool})
 
 
-def extract(image, chosen, destination, include_empty, context):
+def extract(image, parts, skipped_empty, selected_slots, destination, context):
     require(not os.path.lexists(destination), "Output already exists; choose another directory with -o.")
-    parts = [p for p in chosen["partitions"] if p["size_bytes"] or include_empty]
     total = sum(p["size_bytes"] for p in parts)
     destination.parent.mkdir(parents=True, exist_ok=True)
     require(shutil.disk_usage(destination.parent).free >= total + 1024*1024,
@@ -316,10 +330,14 @@ def extract(image, chosen, destination, include_empty, context):
     try:
         results = []
         for number, part in enumerate(parts, 1):
-            path = staging / (part["name"] + ".img")
+            if all(e["type"] == "zero" or not e["size_bytes"] for e in part["extents"]):
+                skipped_empty.append(dict(part, reason="all_zero"))
+                print("[%d/%d] SKIP %s: zero extents only" % (number, len(parts), part["filename"]), flush=True)
+                continue
+            path = staging / part["filename"]
             print("[%d/%d] %s  %.2f MiB" % (number, len(parts), path.name, part["size_bytes"]/1024**2), flush=True)
             expected = hashlib.sha256()
-            done, last_progress = 0, time.monotonic()
+            done, last_progress, has_data = 0, time.monotonic(), False
             with path.open("xb") as output:
                 for extent in part["extents"]:
                     offset, remaining = extent["offset_bytes"], extent["size_bytes"]
@@ -331,6 +349,7 @@ def extract(image, chosen, destination, include_empty, context):
                             output.seek(take, os.SEEK_CUR)
                         else:
                             output.write(data)
+                            has_data = True
                         remaining -= take
                         offset += take
                         done += take
@@ -338,26 +357,41 @@ def extract(image, chosen, destination, include_empty, context):
                             print("  %.1f%%" % (100*done/part["size_bytes"]), flush=True)
                             last_progress = time.monotonic()
                 output.truncate(part["size_bytes"])
+            if not has_data:
+                path.unlink()
+                skipped_empty.append(dict(part, reason="all_zero"))
+                print("  SKIP: all bytes are zero", flush=True)
+                continue
             actual = file_sha256(path)
             require(path.stat().st_size == part["size_bytes"] and actual == expected.hexdigest(),
                     "Output size or SHA-256 mismatch: " + path.name)
-            result = dict(part, filename=path.name, sha256=actual, verification="passed")
+            result = dict(part, sha256=actual, verification="passed")
             results.append(result)
             print("  SHA-256 OK: " + actual, flush=True)
+            if "error" in part["filesystem"]:
+                print("  Filesystem warning: " + part["filesystem"]["error"], flush=True)
         image.unchanged()
-        report = dict(context, status="passed", selected_slot=chosen["slot"],
-                      selected_copy=chosen["copy"], output_directory=str(destination),
-                      extracted_partitions=results,
-                      skipped_empty=[p["name"] for p in chosen["partitions"] if not p["size_bytes"] and not include_empty],
+        filesystem_warnings = [{"filename": p["filename"], "warning": p["filesystem"]["error"]}
+                               for p in results if "error" in p["filesystem"]]
+        status = "passed_with_warnings" if filesystem_warnings or context["metadata_warnings"] else "passed"
+        report = dict(context, status=status, selected_metadata_slots=selected_slots,
+                      selection_mode="all_metadata_slots" if context["requested_metadata_slot"] is None else "explicit_metadata_slot",
+                      output_directory=str(destination), extracted_partitions=results,
+                      extracted_boot_slots=sorted({p["name"][-1] for p in results if p["name"].endswith(("_a", "_b"))}),
+                      skipped_empty=skipped_empty, filesystem_warnings=filesystem_warnings,
                       filesystem_contents_extracted=False,
                       filesystem_integrity_checked=False,
-                      verification="Output size and SHA-256 match the bytes read from source extents; filesystem headers probed only.")
+                      verification="Output size and SHA-256 match source extents. Readable mappings with filesystem warnings are retained; unknown filesystems are not validated.")
         (staging / "extraction_report.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
         (staging / "SHA256SUMS.txt").write_text("".join(p["sha256"] + "  " + p["filename"] + "\n" for p in results), encoding="ascii")
         require(not os.path.lexists(destination), "Output appeared during extraction; refusing to replace it.")
         staging.rename(destination)
         completed = True
-        print("PASS: %d images, %d bytes. Output: %s" % (len(results), total, destination), flush=True)
+        label = "PASS WITH WARNINGS" if status == "passed_with_warnings" else "PASS"
+        print("%s: %d images, %d bytes; %d empty mappings skipped. Output: %s" % (
+            label, len(results), sum(p["size_bytes"] for p in results), len(skipped_empty), destination), flush=True)
+        if filesystem_warnings:
+            print("Some partition data is incomplete or inconsistent; see filesystem_warnings in extraction_report.json.")
         print("Only partition .img files were extracted; no filesystem was unpacked.")
     finally:
         if not completed:
@@ -368,9 +402,8 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("-s", "--super", required=True, dest="source", type=Path, help="Input super.img (raw or Android sparse)")
     parser.add_argument("-o", "--output", type=Path, help="New output directory (default: ./<input-stem>_extracted)")
-    parser.add_argument("--slot", type=int, help="Select a metadata slot explicitly (0, 1, ...)")
+    parser.add_argument("--slot", type=int, help="Limit to one metadata slot (default: ALL metadata slots, populated A/B partitions)")
     parser.add_argument("--list", action="store_true", help="Inspect all slots without writing output")
-    parser.add_argument("--include-empty", action="store_true", help="Also create zero-byte images for empty partitions")
     parser.add_argument("--version", action="version", version=VERSION)
     args = parser.parse_args(argv)
     try:
@@ -402,13 +435,15 @@ def main(argv=None):
                         print("  %-24s %12d bytes  %s" % (p["name"], p["size_bytes"], p["filesystem"]["type"]))
                 image.unchanged()
                 return 0
-            chosen = choose_metadata(candidates, args.slot)
-            print("Selected metadata slot %d (%s)." % (chosen["slot"], chosen["copy"]), flush=True)
+            parts, skipped_empty, selected_slots = collect_partitions(candidates, args.slot)
+            print("Reading metadata slots %s: %d distinct allocated mappings, %d zero-size entries skipped." % (
+                ", ".join(map(str, selected_slots)), len(parts), len(skipped_empty)), flush=True)
             context = {"tool_version": VERSION, "source": str(source), "source_format": image.format,
                        "source_file_bytes": image.physical_size, "source_logical_bytes": image.size,
                        "sparse_crc_verified": image.sparse_crc_verified,
-                       "metadata_candidates": candidates, "metadata_warnings": errors}
-            extract(image, chosen, output, args.include_empty, context)
+                       "metadata_candidates": candidates, "metadata_warnings": errors,
+                       "requested_metadata_slot": args.slot}
+            extract(image, parts, skipped_empty, selected_slots, output, context)
         return 0
     except (ImageError, OSError, ValueError, struct.error) as error:
         print("ERROR: " + str(error), file=sys.stderr)

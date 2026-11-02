@@ -1,57 +1,123 @@
 {
-  "status": "passed",
+  "tool_version": "1.1.0",
+  "extraction_status": "passed_with_source_filesystem_warnings",
   "real_image_command": "python3 unpack_super.py -s super.img",
   "source": "/mnt/d/TEMP/EMMC TV3 24. 2024/super/super.img",
   "source_bytes": 5242880000,
-  "selected_slot": 1,
-  "partition_count": 8,
-  "partition_bytes": 1489055744,
-  "all_previous_sha256_match": true,
+  "selected_metadata_slots": [
+    0,
+    1,
+    2
+  ],
+  "partition_count": 16,
+  "partition_count_a": 8,
+  "partition_count_b": 8,
+  "partition_bytes": 2216140800,
+  "empty_mappings_skipped": 8,
+  "all_16_previous_sha256_match": true,
   "only_partition_images_extracted": true,
   "filesystem_checks": [
     {
+      "name": "system_a",
+      "filename": "system_a.img",
+      "exit_code": 1,
+      "log": "system_a_fsck.log"
+    },
+    {
+      "name": "vendor_a",
+      "filename": "vendor_a.img",
+      "exit_code": 1,
+      "log": "vendor_a_fsck.log"
+    },
+    {
+      "name": "product_a",
+      "filename": "product_a.img",
+      "exit_code": 1,
+      "log": "product_a_fsck.log"
+    },
+    {
+      "name": "odm_a",
+      "filename": "odm_a.img",
+      "exit_code": 1,
+      "log": "odm_a_fsck.log"
+    },
+    {
+      "name": "system_ext_a",
+      "filename": "system_ext_a.img",
+      "exit_code": 1,
+      "log": "system_ext_a_fsck.log"
+    },
+    {
+      "name": "vendor_dlkm_a",
+      "filename": "vendor_dlkm_a.img",
+      "exit_code": 1,
+      "log": "vendor_dlkm_a_fsck.log"
+    },
+    {
+      "name": "system_dlkm_a",
+      "filename": "system_dlkm_a.img",
+      "exit_code": 1,
+      "log": "system_dlkm_a_fsck.log"
+    },
+    {
+      "name": "odm_dlkm_a",
+      "filename": "odm_dlkm_a.img",
+      "exit_code": 1,
+      "log": "odm_dlkm_a_fsck.log"
+    },
+    {
       "name": "system_b",
+      "filename": "system_b.img",
       "exit_code": 0,
       "log": "system_b_fsck.log"
     },
     {
       "name": "vendor_b",
+      "filename": "vendor_b.img",
       "exit_code": 0,
       "log": "vendor_b_fsck.log"
     },
     {
       "name": "product_b",
+      "filename": "product_b.img",
       "exit_code": 0,
       "log": "product_b_fsck.log"
     },
     {
       "name": "odm_b",
+      "filename": "odm_b.img",
       "exit_code": 0,
       "log": "odm_b_fsck.log"
     },
     {
       "name": "system_ext_b",
+      "filename": "system_ext_b.img",
       "exit_code": 0,
       "log": "system_ext_b_fsck.log"
     },
     {
       "name": "vendor_dlkm_b",
+      "filename": "vendor_dlkm_b.img",
       "exit_code": 0,
       "log": "vendor_dlkm_b_fsck.log"
     },
     {
       "name": "system_dlkm_b",
+      "filename": "system_dlkm_b.img",
       "exit_code": 0,
       "log": "system_dlkm_b_fsck.log"
     },
     {
       "name": "odm_dlkm_b",
+      "filename": "odm_dlkm_b.img",
       "exit_code": 0,
       "log": "odm_dlkm_b_fsck.log"
     }
   ],
-  "synthetic_tests_passed": 14,
+  "filesystem_a_passed": 0,
+  "filesystem_b_passed": 8,
+  "synthetic_tests_passed": 24,
+  "note": "A mappings refer to nonzero data, but all 8 fail EROFS integrity checks in the source. Raw extraction is byte-exact. B files are valid EROFS images.",
   "python_runtime": "Python 3.14.4",
-  "erofs_runtime": "fsck.erofs (erofs-utils) 1.9",
-  "installer_validation": "bash syntax and already-installed dependency checks passed; package installation branches were not run"
+  "erofs_runtime": "fsck.erofs (erofs-utils) 1.9"
 }
