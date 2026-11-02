@@ -1,0 +1,57 @@
+{
+  "status": "passed",
+  "real_image_command": "python3 unpack_super.py -s super.img",
+  "source": "/mnt/d/TEMP/EMMC TV3 24. 2024/super/super.img",
+  "source_bytes": 5242880000,
+  "selected_slot": 1,
+  "partition_count": 8,
+  "partition_bytes": 1489055744,
+  "all_previous_sha256_match": true,
+  "only_partition_images_extracted": true,
+  "filesystem_checks": [
+    {
+      "name": "system_b",
+      "exit_code": 0,
+      "log": "system_b_fsck.log"
+    },
+    {
+      "name": "vendor_b",
+      "exit_code": 0,
+      "log": "vendor_b_fsck.log"
+    },
+    {
+      "name": "product_b",
+      "exit_code": 0,
+      "log": "product_b_fsck.log"
+    },
+    {
+      "name": "odm_b",
+      "exit_code": 0,
+      "log": "odm_b_fsck.log"
+    },
+    {
+      "name": "system_ext_b",
+      "exit_code": 0,
+      "log": "system_ext_b_fsck.log"
+    },
+    {
+      "name": "vendor_dlkm_b",
+      "exit_code": 0,
+      "log": "vendor_dlkm_b_fsck.log"
+    },
+    {
+      "name": "system_dlkm_b",
+      "exit_code": 0,
+      "log": "system_dlkm_b_fsck.log"
+    },
+    {
+      "name": "odm_dlkm_b",
+      "exit_code": 0,
+      "log": "odm_dlkm_b_fsck.log"
+    }
+  ],
+  "synthetic_tests_passed": 14,
+  "python_runtime": "Python 3.14.4",
+  "erofs_runtime": "fsck.erofs (erofs-utils) 1.9",
+  "installer_validation": "bash syntax and already-installed dependency checks passed; package installation branches were not run"
+}

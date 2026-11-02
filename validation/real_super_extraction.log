@@ -1,0 +1,27 @@
+Input: /mnt/d/TEMP/EMMC TV3 24. 2024/super/super.img (raw, logical size 5242880000 bytes)
+Slot 0 primary: 8 nonempty partitions; system_a: Filesystem needs 837005312 bytes, partition provides 434946048
+Slot 0 backup : 8 nonempty partitions; system_a: Filesystem needs 837005312 bytes, partition provides 434946048
+Slot 1 primary: 8 nonempty partitions
+Slot 1 backup : 8 nonempty partitions
+Slot 2 primary: 8 nonempty partitions; system_a: Filesystem needs 837005312 bytes, partition provides 434946048
+Slot 2 backup : 8 nonempty partitions; system_a: Filesystem needs 837005312 bytes, partition provides 434946048
+Selected metadata slot 1 (primary).
+[1/8] system_b.img  813.55 MiB
+  51.1%
+  SHA-256 OK: 619b25ccdd5be5fd2514127de99f952f3b4e0de3f92e233f1d528ef4974a2913
+[2/8] vendor_b.img  100.86 MiB
+  SHA-256 OK: 36af9595c742e7ebe67624cddd231bbda9cc5591be2311ff6fbee30047a8da80
+[3/8] product_b.img  425.97 MiB
+  SHA-256 OK: ac55d6139353fd980314d1ea4e18b82f8550020d2bb9dece258faa51e67fcfc0
+[4/8] odm_b.img  0.48 MiB
+  SHA-256 OK: efbb00a4d79e9b3a4feaa1b789d28f67f687506a6afa5d2ce975ec74f48afcd0
+[5/8] system_ext_b.img  49.71 MiB
+  SHA-256 OK: 2aaad7ce8b365f17cce320d7b6bff8e09f1261f9208ea6826cf9407791d919ef
+[6/8] vendor_dlkm_b.img  28.45 MiB
+  SHA-256 OK: 5fc5e21aad1f3a323b9a2c98bf815981a9b59914bb356831c86f84359602ce4e
+[7/8] system_dlkm_b.img  0.71 MiB
+  SHA-256 OK: ba38d7ab4ccaa72416bb78c522f20affec51e48334790c5381e7816da60bd37f
+[8/8] odm_dlkm_b.img  0.33 MiB
+  SHA-256 OK: 231919195db353bd513668f450f8b7d457dc6439642f1fcc169bb9cfb21eb2aa
+PASS: 8 images, 1489055744 bytes. Output: /tmp/super-unpack-real-zl5oe72a/super_extracted
+Only partition .img files were extracted; no filesystem was unpacked.

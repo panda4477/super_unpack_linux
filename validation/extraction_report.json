@@ -1,0 +1,1267 @@
+{
+  "tool_version": "1.0.0",
+  "source": "/mnt/d/TEMP/EMMC TV3 24. 2024/super/super.img",
+  "source_format": "raw",
+  "source_file_bytes": 5242880000,
+  "source_logical_bytes": 5242880000,
+  "sparse_crc_verified": false,
+  "metadata_candidates": [
+    {
+      "slot": 0,
+      "copy": "primary",
+      "version": "10.2",
+      "tables_sha256": "f6b7f7fa369bdfcad9472a48ab2d41edf70a91ee51689cfb7bfb9c295a49e053",
+      "partitions": [
+        {
+          "name": "system_a",
+          "attributes": 1,
+          "size_bytes": 434946048,
+          "extents": [
+            {
+              "type": "linear",
+              "offset_bytes": 1048576,
+              "size_bytes": 434946048
+            }
+          ],
+          "filesystem": {
+            "type": "erofs",
+            "size_bytes": 837005312,
+            "error": "Filesystem needs 837005312 bytes, partition provides 434946048"
+          }
+        },
+        {
+          "name": "system_b",
+          "attributes": 1,
+          "size_bytes": 0,
+          "extents": [],
+          "filesystem": {
+            "type": "unknown"
+          }
+        },
+        {
+          "name": "vendor_a",
+          "attributes": 1,
+          "size_bytes": 141705216,
+          "extents": [
+            {
+              "type": "linear",
+              "offset_bytes": 436207616,
+              "size_bytes": 141705216
+            }
+          ],
+          "filesystem": {
+            "type": "unknown"
+          }
+        },
+        {
+          "name": "vendor_b",
+          "attributes": 1,
+          "size_bytes": 0,
+          "extents": [],
+          "filesystem": {
+            "type": "unknown"
+          }
+        },
+        {
+          "name": "product_a",
+          "attributes": 1,
+          "size_bytes": 70717440,
+          "extents": [
+            {
+              "type": "linear",
+              "offset_bytes": 578813952,
+              "size_bytes": 70717440
+            }
+          ],
+          "filesystem": {
+            "type": "unknown"
+          }
+        },
+        {
+          "name": "product_b",
+          "attributes": 1,
+          "size_bytes": 0,
+          "extents": [],
+          "filesystem": {
+            "type": "unknown"
+          }
+        },
+        {
+          "name": "odm_a",
+          "attributes": 1,
+          "size_bytes": 507904,
+          "extents": [
+            {
+              "type": "linear",
+              "offset_bytes": 650117120,
+              "size_bytes": 507904
+            }
+          ],
+          "filesystem": {
+            "type": "unknown"
+          }
+        },
+        {
+          "name": "odm_b",
+          "attributes": 1,
+          "size_bytes": 0,
+          "extents": [],
+          "filesystem": {
+            "type": "unknown"
+          }
+        },
+        {
+          "name": "system_ext_a",
+          "attributes": 1,
+          "size_bytes": 48222208,
+          "extents": [
+            {
+              "type": "linear",
+              "offset_bytes": 651165696,
+              "size_bytes": 48222208
+            }
+          ],
+          "filesystem": {
+            "type": "unknown"
+          }
+        },
+        {
+          "name": "system_ext_b",
+          "attributes": 1,
+          "size_bytes": 0,
+          "extents": [],
+          "filesystem": {
+            "type": "unknown"
+          }
+        },
+        {
+          "name": "vendor_dlkm_a",
+          "attributes": 1,
+          "size_bytes": 29786112,
+          "extents": [
+            {
+              "type": "linear",
+              "offset_bytes": 699400192,
+              "size_bytes": 29786112
+            }
+          ],
+          "filesystem": {
+            "type": "unknown"
+          }
+        },
+        {
+          "name": "vendor_dlkm_b",
+          "attributes": 1,
+          "size_bytes": 0,
+          "extents": [],
+          "filesystem": {
+            "type": "unknown"
+          }
+        },
+        {
+          "name": "system_dlkm_a",
+          "attributes": 1,
+          "size_bytes": 851968,
+          "extents": [
+            {
+              "type": "linear",
+              "offset_bytes": 729808896,
+              "size_bytes": 851968
+            }
+          ],
+          "filesystem": {
+            "type": "unknown"
+          }
+        },
+        {
+          "name": "system_dlkm_b",
+          "attributes": 1,
+          "size_bytes": 0,
+          "extents": [],
+          "filesystem": {
+            "type": "unknown"
+          }
+        },
+        {
+          "name": "odm_dlkm_a",
+          "attributes": 1,
+          "size_bytes": 348160,
+          "extents": [
+            {
+              "type": "linear",
+              "offset_bytes": 730857472,
+              "size_bytes": 348160
+            }
+          ],
+          "filesystem": {
+            "type": "unknown"
+          }
+        },
+        {
+          "name": "odm_dlkm_b",
+          "attributes": 1,
+          "size_bytes": 0,
+          "extents": [],
+          "filesystem": {
+            "type": "unknown"
+          }
+        }
+      ],
+      "issues": [
+        "system_a: Filesystem needs 837005312 bytes, partition provides 434946048"
+      ]
+    },
+    {
+      "slot": 0,
+      "copy": "backup",
+      "version": "10.2",
+      "tables_sha256": "f6b7f7fa369bdfcad9472a48ab2d41edf70a91ee51689cfb7bfb9c295a49e053",
+      "partitions": [
+        {
+          "name": "system_a",
+          "attributes": 1,
+          "size_bytes": 434946048,
+          "extents": [
+            {
+              "type": "linear",
+              "offset_bytes": 1048576,
+              "size_bytes": 434946048
+            }
+          ],
+          "filesystem": {
+            "type": "erofs",
+            "size_bytes": 837005312,
+            "error": "Filesystem needs 837005312 bytes, partition provides 434946048"
+          }
+        },
+        {
+          "name": "system_b",
+          "attributes": 1,
+          "size_bytes": 0,
+          "extents": [],
+          "filesystem": {
+            "type": "unknown"
+          }
+        },
+        {
+          "name": "vendor_a",
+          "attributes": 1,
+          "size_bytes": 141705216,
+          "extents": [
+            {
+              "type": "linear",
+              "offset_bytes": 436207616,
+              "size_bytes": 141705216
+            }
+          ],
+          "filesystem": {
+            "type": "unknown"
+          }
+        },
+        {
+          "name": "vendor_b",
+          "attributes": 1,
+          "size_bytes": 0,
+          "extents": [],
+          "filesystem": {
+            "type": "unknown"
+          }
+        },
+        {
+          "name": "product_a",
+          "attributes": 1,
+          "size_bytes": 70717440,
+          "extents": [
+            {
+              "type": "linear",
+              "offset_bytes": 578813952,
+              "size_bytes": 70717440
+            }
+          ],
+          "filesystem": {
+            "type": "unknown"
+          }
+        },
+        {
+          "name": "product_b",
+          "attributes": 1,
+          "size_bytes": 0,
+          "extents": [],
+          "filesystem": {
+            "type": "unknown"
+          }
+        },
+        {
+          "name": "odm_a",
+          "attributes": 1,
+          "size_bytes": 507904,
+          "extents": [
+            {
+              "type": "linear",
+              "offset_bytes": 650117120,
+              "size_bytes": 507904
+            }
+          ],
+          "filesystem": {
+            "type": "unknown"
+          }
+        },
+        {
+          "name": "odm_b",
+          "attributes": 1,
+          "size_bytes": 0,
+          "extents": [],
+          "filesystem": {
+            "type": "unknown"
+          }
+        },
+        {
+          "name": "system_ext_a",
+          "attributes": 1,
+          "size_bytes": 48222208,
+          "extents": [
+            {
+              "type": "linear",
+              "offset_bytes": 651165696,
+              "size_bytes": 48222208
+            }
+          ],
+          "filesystem": {
+            "type": "unknown"
+          }
+        },
+        {
+          "name": "system_ext_b",
+          "attributes": 1,
+          "size_bytes": 0,
+          "extents": [],
+          "filesystem": {
+            "type": "unknown"
+          }
+        },
+        {
+          "name": "vendor_dlkm_a",
+          "attributes": 1,
+          "size_bytes": 29786112,
+          "extents": [
+            {
+              "type": "linear",
+              "offset_bytes": 699400192,
+              "size_bytes": 29786112
+            }
+          ],
+          "filesystem": {
+            "type": "unknown"
+          }
+        },
+        {
+          "name": "vendor_dlkm_b",
+          "attributes": 1,
+          "size_bytes": 0,
+          "extents": [],
+          "filesystem": {
+            "type": "unknown"
+          }
+        },
+        {
+          "name": "system_dlkm_a",
+          "attributes": 1,
+          "size_bytes": 851968,
+          "extents": [
+            {
+              "type": "linear",
+              "offset_bytes": 729808896,
+              "size_bytes": 851968
+            }
+          ],
+          "filesystem": {
+            "type": "unknown"
+          }
+        },
+        {
+          "name": "system_dlkm_b",
+          "attributes": 1,
+          "size_bytes": 0,
+          "extents": [],
+          "filesystem": {
+            "type": "unknown"
+          }
+        },
+        {
+          "name": "odm_dlkm_a",
+          "attributes": 1,
+          "size_bytes": 348160,
+          "extents": [
+            {
+              "type": "linear",
+              "offset_bytes": 730857472,
+              "size_bytes": 348160
+            }
+          ],
+          "filesystem": {
+            "type": "unknown"
+          }
+        },
+        {
+          "name": "odm_dlkm_b",
+          "attributes": 1,
+          "size_bytes": 0,
+          "extents": [],
+          "filesystem": {
+            "type": "unknown"
+          }
+        }
+      ],
+      "issues": [
+        "system_a: Filesystem needs 837005312 bytes, partition provides 434946048"
+      ]
+    },
+    {
+      "slot": 1,
+      "copy": "primary",
+      "version": "10.2",
+      "tables_sha256": "ecfc22589d187da3188c9810324aa7b11be8752f94273739119316b44ef7e1bc",
+      "partitions": [
+        {
+          "name": "system_b",
+          "attributes": 1,
+          "size_bytes": 853069824,
+          "extents": [
+            {
+              "type": "linear",
+              "offset_bytes": 1048576,
+              "size_bytes": 853069824
+            }
+          ],
+          "filesystem": {
+            "type": "erofs",
+            "size_bytes": 837005312
+          }
+        },
+        {
+          "name": "vendor_b",
+          "attributes": 1,
+          "size_bytes": 105758720,
+          "extents": [
+            {
+              "type": "linear",
+              "offset_bytes": 854118400,
+              "size_bytes": 105758720
+            }
+          ],
+          "filesystem": {
+            "type": "erofs",
+            "size_bytes": 103690240
+          }
+        },
+        {
+          "name": "product_b",
+          "attributes": 1,
+          "size_bytes": 446664704,
+          "extents": [
+            {
+              "type": "linear",
+              "offset_bytes": 959877120,
+              "size_bytes": 446664704
+            }
+          ],
+          "filesystem": {
+            "type": "erofs",
+            "size_bytes": 438214656
+          }
+        },
+        {
+          "name": "odm_b",
+          "attributes": 1,
+          "size_bytes": 503808,
+          "extents": [
+            {
+              "type": "linear",
+              "offset_bytes": 1406541824,
+              "size_bytes": 503808
+            }
+          ],
+          "filesystem": {
+            "type": "erofs",
+            "size_bytes": 413696
+          }
+        },
+        {
+          "name": "system_ext_b",
+          "attributes": 1,
+          "size_bytes": 52129792,
+          "extents": [
+            {
+              "type": "linear",
+              "offset_bytes": 1407045632,
+              "size_bytes": 52129792
+            }
+          ],
+          "filesystem": {
+            "type": "erofs",
+            "size_bytes": 51068928
+          }
+        },
+        {
+          "name": "vendor_dlkm_b",
+          "attributes": 1,
+          "size_bytes": 29835264,
+          "extents": [
+            {
+              "type": "linear",
+              "offset_bytes": 1459175424,
+              "size_bytes": 29835264
+            }
+          ],
+          "filesystem": {
+            "type": "erofs",
+            "size_bytes": 29196288
+          }
+        },
+        {
+          "name": "system_dlkm_b",
+          "attributes": 1,
+          "size_bytes": 745472,
+          "extents": [
+            {
+              "type": "linear",
+              "offset_bytes": 1489010688,
+              "size_bytes": 745472
+            }
+          ],
+          "filesystem": {
+            "type": "erofs",
+            "size_bytes": 647168
+          }
+        },
+        {
+          "name": "odm_dlkm_b",
+          "attributes": 1,
+          "size_bytes": 348160,
+          "extents": [
+            {
+              "type": "linear",
+              "offset_bytes": 1489756160,
+              "size_bytes": 348160
+            }
+          ],
+          "filesystem": {
+            "type": "erofs",
+            "size_bytes": 57344
+          }
+        }
+      ],
+      "issues": []
+    },
+    {
+      "slot": 1,
+      "copy": "backup",
+      "version": "10.2",
+      "tables_sha256": "ecfc22589d187da3188c9810324aa7b11be8752f94273739119316b44ef7e1bc",
+      "partitions": [
+        {
+          "name": "system_b",
+          "attributes": 1,
+          "size_bytes": 853069824,
+          "extents": [
+            {
+              "type": "linear",
+              "offset_bytes": 1048576,
+              "size_bytes": 853069824
+            }
+          ],
+          "filesystem": {
+            "type": "erofs",
+            "size_bytes": 837005312
+          }
+        },
+        {
+          "name": "vendor_b",
+          "attributes": 1,
+          "size_bytes": 105758720,
+          "extents": [
+            {
+              "type": "linear",
+              "offset_bytes": 854118400,
+              "size_bytes": 105758720
+            }
+          ],
+          "filesystem": {
+            "type": "erofs",
+            "size_bytes": 103690240
+          }
+        },
+        {
+          "name": "product_b",
+          "attributes": 1,
+          "size_bytes": 446664704,
+          "extents": [
+            {
+              "type": "linear",
+              "offset_bytes": 959877120,
+              "size_bytes": 446664704
+            }
+          ],
+          "filesystem": {
+            "type": "erofs",
+            "size_bytes": 438214656
+          }
+        },
+        {
+          "name": "odm_b",
+          "attributes": 1,
+          "size_bytes": 503808,
+          "extents": [
+            {
+              "type": "linear",
+              "offset_bytes": 1406541824,
+              "size_bytes": 503808
+            }
+          ],
+          "filesystem": {
+            "type": "erofs",
+            "size_bytes": 413696
+          }
+        },
+        {
+          "name": "system_ext_b",
+          "attributes": 1,
+          "size_bytes": 52129792,
+          "extents": [
+            {
+              "type": "linear",
+              "offset_bytes": 1407045632,
+              "size_bytes": 52129792
+            }
+          ],
+          "filesystem": {
+            "type": "erofs",
+            "size_bytes": 51068928
+          }
+        },
+        {
+          "name": "vendor_dlkm_b",
+          "attributes": 1,
+          "size_bytes": 29835264,
+          "extents": [
+            {
+              "type": "linear",
+              "offset_bytes": 1459175424,
+              "size_bytes": 29835264
+            }
+          ],
+          "filesystem": {
+            "type": "erofs",
+            "size_bytes": 29196288
+          }
+        },
+        {
+          "name": "system_dlkm_b",
+          "attributes": 1,
+          "size_bytes": 745472,
+          "extents": [
+            {
+              "type": "linear",
+              "offset_bytes": 1489010688,
+              "size_bytes": 745472
+            }
+          ],
+          "filesystem": {
+            "type": "erofs",
+            "size_bytes": 647168
+          }
+        },
+        {
+          "name": "odm_dlkm_b",
+          "attributes": 1,
+          "size_bytes": 348160,
+          "extents": [
+            {
+              "type": "linear",
+              "offset_bytes": 1489756160,
+              "size_bytes": 348160
+            }
+          ],
+          "filesystem": {
+            "type": "erofs",
+            "size_bytes": 57344
+          }
+        }
+      ],
+      "issues": []
+    },
+    {
+      "slot": 2,
+      "copy": "primary",
+      "version": "10.2",
+      "tables_sha256": "f6b7f7fa369bdfcad9472a48ab2d41edf70a91ee51689cfb7bfb9c295a49e053",
+      "partitions": [
+        {
+          "name": "system_a",
+          "attributes": 1,
+          "size_bytes": 434946048,
+          "extents": [
+            {
+              "type": "linear",
+              "offset_bytes": 1048576,
+              "size_bytes": 434946048
+            }
+          ],
+          "filesystem": {
+            "type": "erofs",
+            "size_bytes": 837005312,
+            "error": "Filesystem needs 837005312 bytes, partition provides 434946048"
+          }
+        },
+        {
+          "name": "system_b",
+          "attributes": 1,
+          "size_bytes": 0,
+          "extents": [],
+          "filesystem": {
+            "type": "unknown"
+          }
+        },
+        {
+          "name": "vendor_a",
+          "attributes": 1,
+          "size_bytes": 141705216,
+          "extents": [
+            {
+              "type": "linear",
+              "offset_bytes": 436207616,
+              "size_bytes": 141705216
+            }
+          ],
+          "filesystem": {
+            "type": "unknown"
+          }
+        },
+        {
+          "name": "vendor_b",
+          "attributes": 1,
+          "size_bytes": 0,
+          "extents": [],
+          "filesystem": {
+            "type": "unknown"
+          }
+        },
+        {
+          "name": "product_a",
+          "attributes": 1,
+          "size_bytes": 70717440,
+          "extents": [
+            {
+              "type": "linear",
+              "offset_bytes": 578813952,
+              "size_bytes": 70717440
+            }
+          ],
+          "filesystem": {
+            "type": "unknown"
+          }
+        },
+        {
+          "name": "product_b",
+          "attributes": 1,
+          "size_bytes": 0,
+          "extents": [],
+          "filesystem": {
+            "type": "unknown"
+          }
+        },
+        {
+          "name": "odm_a",
+          "attributes": 1,
+          "size_bytes": 507904,
+          "extents": [
+            {
+              "type": "linear",
+              "offset_bytes": 650117120,
+              "size_bytes": 507904
+            }
+          ],
+          "filesystem": {
+            "type": "unknown"
+          }
+        },
+        {
+          "name": "odm_b",
+          "attributes": 1,
+          "size_bytes": 0,
+          "extents": [],
+          "filesystem": {
+            "type": "unknown"
+          }
+        },
+        {
+          "name": "system_ext_a",
+          "attributes": 1,
+          "size_bytes": 48222208,
+          "extents": [
+            {
+              "type": "linear",
+              "offset_bytes": 651165696,
+              "size_bytes": 48222208
+            }
+          ],
+          "filesystem": {
+            "type": "unknown"
+          }
+        },
+        {
+          "name": "system_ext_b",
+          "attributes": 1,
+          "size_bytes": 0,
+          "extents": [],
+          "filesystem": {
+            "type": "unknown"
+          }
+        },
+        {
+          "name": "vendor_dlkm_a",
+          "attributes": 1,
+          "size_bytes": 29786112,
+          "extents": [
+            {
+              "type": "linear",
+              "offset_bytes": 699400192,
+              "size_bytes": 29786112
+            }
+          ],
+          "filesystem": {
+            "type": "unknown"
+          }
+        },
+        {
+          "name": "vendor_dlkm_b",
+          "attributes": 1,
+          "size_bytes": 0,
+          "extents": [],
+          "filesystem": {
+            "type": "unknown"
+          }
+        },
+        {
+          "name": "system_dlkm_a",
+          "attributes": 1,
+          "size_bytes": 851968,
+          "extents": [
+            {
+              "type": "linear",
+              "offset_bytes": 729808896,
+              "size_bytes": 851968
+            }
+          ],
+          "filesystem": {
+            "type": "unknown"
+          }
+        },
+        {
+          "name": "system_dlkm_b",
+          "attributes": 1,
+          "size_bytes": 0,
+          "extents": [],
+          "filesystem": {
+            "type": "unknown"
+          }
+        },
+        {
+          "name": "odm_dlkm_a",
+          "attributes": 1,
+          "size_bytes": 348160,
+          "extents": [
+            {
+              "type": "linear",
+              "offset_bytes": 730857472,
+              "size_bytes": 348160
+            }
+          ],
+          "filesystem": {
+            "type": "unknown"
+          }
+        },
+        {
+          "name": "odm_dlkm_b",
+          "attributes": 1,
+          "size_bytes": 0,
+          "extents": [],
+          "filesystem": {
+            "type": "unknown"
+          }
+        }
+      ],
+      "issues": [
+        "system_a: Filesystem needs 837005312 bytes, partition provides 434946048"
+      ]
+    },
+    {
+      "slot": 2,
+      "copy": "backup",
+      "version": "10.2",
+      "tables_sha256": "f6b7f7fa369bdfcad9472a48ab2d41edf70a91ee51689cfb7bfb9c295a49e053",
+      "partitions": [
+        {
+          "name": "system_a",
+          "attributes": 1,
+          "size_bytes": 434946048,
+          "extents": [
+            {
+              "type": "linear",
+              "offset_bytes": 1048576,
+              "size_bytes": 434946048
+            }
+          ],
+          "filesystem": {
+            "type": "erofs",
+            "size_bytes": 837005312,
+            "error": "Filesystem needs 837005312 bytes, partition provides 434946048"
+          }
+        },
+        {
+          "name": "system_b",
+          "attributes": 1,
+          "size_bytes": 0,
+          "extents": [],
+          "filesystem": {
+            "type": "unknown"
+          }
+        },
+        {
+          "name": "vendor_a",
+          "attributes": 1,
+          "size_bytes": 141705216,
+          "extents": [
+            {
+              "type": "linear",
+              "offset_bytes": 436207616,
+              "size_bytes": 141705216
+            }
+          ],
+          "filesystem": {
+            "type": "unknown"
+          }
+        },
+        {
+          "name": "vendor_b",
+          "attributes": 1,
+          "size_bytes": 0,
+          "extents": [],
+          "filesystem": {
+            "type": "unknown"
+          }
+        },
+        {
+          "name": "product_a",
+          "attributes": 1,
+          "size_bytes": 70717440,
+          "extents": [
+            {
+              "type": "linear",
+              "offset_bytes": 578813952,
+              "size_bytes": 70717440
+            }
+          ],
+          "filesystem": {
+            "type": "unknown"
+          }
+        },
+        {
+          "name": "product_b",
+          "attributes": 1,
+          "size_bytes": 0,
+          "extents": [],
+          "filesystem": {
+            "type": "unknown"
+          }
+        },
+        {
+          "name": "odm_a",
+          "attributes": 1,
+          "size_bytes": 507904,
+          "extents": [
+            {
+              "type": "linear",
+              "offset_bytes": 650117120,
+              "size_bytes": 507904
+            }
+          ],
+          "filesystem": {
+            "type": "unknown"
+          }
+        },
+        {
+          "name": "odm_b",
+          "attributes": 1,
+          "size_bytes": 0,
+          "extents": [],
+          "filesystem": {
+            "type": "unknown"
+          }
+        },
+        {
+          "name": "system_ext_a",
+          "attributes": 1,
+          "size_bytes": 48222208,
+          "extents": [
+            {
+              "type": "linear",
+              "offset_bytes": 651165696,
+              "size_bytes": 48222208
+            }
+          ],
+          "filesystem": {
+            "type": "unknown"
+          }
+        },
+        {
+          "name": "system_ext_b",
+          "attributes": 1,
+          "size_bytes": 0,
+          "extents": [],
+          "filesystem": {
+            "type": "unknown"
+          }
+        },
+        {
+          "name": "vendor_dlkm_a",
+          "attributes": 1,
+          "size_bytes": 29786112,
+          "extents": [
+            {
+              "type": "linear",
+              "offset_bytes": 699400192,
+              "size_bytes": 29786112
+            }
+          ],
+          "filesystem": {
+            "type": "unknown"
+          }
+        },
+        {
+          "name": "vendor_dlkm_b",
+          "attributes": 1,
+          "size_bytes": 0,
+          "extents": [],
+          "filesystem": {
+            "type": "unknown"
+          }
+        },
+        {
+          "name": "system_dlkm_a",
+          "attributes": 1,
+          "size_bytes": 851968,
+          "extents": [
+            {
+              "type": "linear",
+              "offset_bytes": 729808896,
+              "size_bytes": 851968
+            }
+          ],
+          "filesystem": {
+            "type": "unknown"
+          }
+        },
+        {
+          "name": "system_dlkm_b",
+          "attributes": 1,
+          "size_bytes": 0,
+          "extents": [],
+          "filesystem": {
+            "type": "unknown"
+          }
+        },
+        {
+          "name": "odm_dlkm_a",
+          "attributes": 1,
+          "size_bytes": 348160,
+          "extents": [
+            {
+              "type": "linear",
+              "offset_bytes": 730857472,
+              "size_bytes": 348160
+            }
+          ],
+          "filesystem": {
+            "type": "unknown"
+          }
+        },
+        {
+          "name": "odm_dlkm_b",
+          "attributes": 1,
+          "size_bytes": 0,
+          "extents": [],
+          "filesystem": {
+            "type": "unknown"
+          }
+        }
+      ],
+      "issues": [
+        "system_a: Filesystem needs 837005312 bytes, partition provides 434946048"
+      ]
+    }
+  ],
+  "metadata_warnings": [],
+  "status": "passed",
+  "selected_slot": 1,
+  "selected_copy": "primary",
+  "output_directory": "/tmp/super-unpack-real-zl5oe72a/super_extracted",
+  "extracted_partitions": [
+    {
+      "name": "system_b",
+      "attributes": 1,
+      "size_bytes": 853069824,
+      "extents": [
+        {
+          "type": "linear",
+          "offset_bytes": 1048576,
+          "size_bytes": 853069824
+        }
+      ],
+      "filesystem": {
+        "type": "erofs",
+        "size_bytes": 837005312
+      },
+      "filename": "system_b.img",
+      "sha256": "619b25ccdd5be5fd2514127de99f952f3b4e0de3f92e233f1d528ef4974a2913",
+      "verification": "passed"
+    },
+    {
+      "name": "vendor_b",
+      "attributes": 1,
+      "size_bytes": 105758720,
+      "extents": [
+        {
+          "type": "linear",
+          "offset_bytes": 854118400,
+          "size_bytes": 105758720
+        }
+      ],
+      "filesystem": {
+        "type": "erofs",
+        "size_bytes": 103690240
+      },
+      "filename": "vendor_b.img",
+      "sha256": "36af9595c742e7ebe67624cddd231bbda9cc5591be2311ff6fbee30047a8da80",
+      "verification": "passed"
+    },
+    {
+      "name": "product_b",
+      "attributes": 1,
+      "size_bytes": 446664704,
+      "extents": [
+        {
+          "type": "linear",
+          "offset_bytes": 959877120,
+          "size_bytes": 446664704
+        }
+      ],
+      "filesystem": {
+        "type": "erofs",
+        "size_bytes": 438214656
+      },
+      "filename": "product_b.img",
+      "sha256": "ac55d6139353fd980314d1ea4e18b82f8550020d2bb9dece258faa51e67fcfc0",
+      "verification": "passed"
+    },
+    {
+      "name": "odm_b",
+      "attributes": 1,
+      "size_bytes": 503808,
+      "extents": [
+        {
+          "type": "linear",
+          "offset_bytes": 1406541824,
+          "size_bytes": 503808
+        }
+      ],
+      "filesystem": {
+        "type": "erofs",
+        "size_bytes": 413696
+      },
+      "filename": "odm_b.img",
+      "sha256": "efbb00a4d79e9b3a4feaa1b789d28f67f687506a6afa5d2ce975ec74f48afcd0",
+      "verification": "passed"
+    },
+    {
+      "name": "system_ext_b",
+      "attributes": 1,
+      "size_bytes": 52129792,
+      "extents": [
+        {
+          "type": "linear",
+          "offset_bytes": 1407045632,
+          "size_bytes": 52129792
+        }
+      ],
+      "filesystem": {
+        "type": "erofs",
+        "size_bytes": 51068928
+      },
+      "filename": "system_ext_b.img",
+      "sha256": "2aaad7ce8b365f17cce320d7b6bff8e09f1261f9208ea6826cf9407791d919ef",
+      "verification": "passed"
+    },
+    {
+      "name": "vendor_dlkm_b",
+      "attributes": 1,
+      "size_bytes": 29835264,
+      "extents": [
+        {
+          "type": "linear",
+          "offset_bytes": 1459175424,
+          "size_bytes": 29835264
+        }
+      ],
+      "filesystem": {
+        "type": "erofs",
+        "size_bytes": 29196288
+      },
+      "filename": "vendor_dlkm_b.img",
+      "sha256": "5fc5e21aad1f3a323b9a2c98bf815981a9b59914bb356831c86f84359602ce4e",
+      "verification": "passed"
+    },
+    {
+      "name": "system_dlkm_b",
+      "attributes": 1,
+      "size_bytes": 745472,
+      "extents": [
+        {
+          "type": "linear",
+          "offset_bytes": 1489010688,
+          "size_bytes": 745472
+        }
+      ],
+      "filesystem": {
+        "type": "erofs",
+        "size_bytes": 647168
+      },
+      "filename": "system_dlkm_b.img",
+      "sha256": "ba38d7ab4ccaa72416bb78c522f20affec51e48334790c5381e7816da60bd37f",
+      "verification": "passed"
+    },
+    {
+      "name": "odm_dlkm_b",
+      "attributes": 1,
+      "size_bytes": 348160,
+      "extents": [
+        {
+          "type": "linear",
+          "offset_bytes": 1489756160,
+          "size_bytes": 348160
+        }
+      ],
+      "filesystem": {
+        "type": "erofs",
+        "size_bytes": 57344
+      },
+      "filename": "odm_dlkm_b.img",
+      "sha256": "231919195db353bd513668f450f8b7d457dc6439642f1fcc169bb9cfb21eb2aa",
+      "verification": "passed"
+    }
+  ],
+  "skipped_empty": [],
+  "filesystem_contents_extracted": false,
+  "filesystem_integrity_checked": false,
+  "verification": "Output size and SHA-256 match the bytes read from source extents; filesystem headers probed only."
+}
